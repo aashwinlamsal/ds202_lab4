@@ -70,9 +70,22 @@ str(bio)
 
 #Part 3: Separate the `Height` column into two columns. Make sure the newly created columns are numeric. Then create one column that represents `Height` (Hint: Use a unit that works well). Drop any irrelavant columns from this process
 
-#bioHeight_Split <- bio %>% str_split(bio$Height, "-")
-#view(bio)
+bioHeight = bio
 
+bio_split = strsplit(as.character(bioHeight$Height), split = "-")
+bioHeight = transform(bioHeight, Height_Feet = sapply(bio_split, "[[", 1), Height_Inches = sapply(bio_split, "[[", 2))
+
+bioHeight = bioHeight %>% mutate_at(c("Height_Feet", "Height_Inches"), funs(as.numeric))
+
+bioHeight$Height_Feet_Inches = bioHeight$Height_Feet * 12
+
+bioHeight$Height_Inches = bioHeight$Height_Inches + bioHeight$Height_Feet_Inches
+
+
+
+bioClean = bioHeight %>% select(-c("Height","Height_Feet", "Height_Feet_Inches", "Hometown", "Highschool"))
+
+offClean = offense %>% 
 
 
 
