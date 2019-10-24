@@ -11,7 +11,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-An excerpt of the individual player data of the Cyclone football team is available from Canvas. Dowload the [excel file](cyclonesFootball2018.xlsx) and put the file next to your Rmd files. 
 
 Some abbreviations for the column names can be found in the Glossaries sheet in the Excel file.
 
@@ -21,9 +20,6 @@ Some abbreviations for the column names can be found in the Glossaries sheet in 
 - [A Beginner's Guide to American Football](https://www.youtube.com/watch?v=3t6hM5tRlfA) for the rules of American football.
 
 ## Loading Data: Cyclone Football 
-
-The Cyclone football data involves multiple Excel sheets and is in a somewhat messy form. The following code loads the Defensive sheet into R. **For this lab, also import the Offensive and the Biography sheets.**
-
 ```{r}
 library(readxl)
 defense <- read_excel('cyclonesFootball2018.xlsx', sheet='Defensive')
@@ -36,12 +32,14 @@ bio <- read_excel('cyclonesFootball2018.xlsx', sheet='Biography')
 ```
 
 ## Part one: Cleaning data
-The three Excel sheets are loaded into R but they are not useful to us before some cleaning. Manipulate the three imported data frames, so that the cleaned data satisfy the following:
+The three Excel sheets are now loaded into R but they are not useful to us before some data cleaning. So we must manipulate the three imported data frames. The manipulation of the data must fit the following requirements
 
-1. The player names and opponent names are factors.
-2. All offensive and defensive statistics are numerical. The `Weight` column in Biography is also numeric. (Hint: look at `?mutate_at` if you want to save writing some code). 
-3. Separate the `Height` column into two columns. Make sure the newly created columns are numeric. Then create one column that represents `Height` (Hint: Use a unit that works well). Drop any irrelavant columns from this process. 
-4. By cleaning the three data frames in R, at the end of this step you should have the following three clean data frames: `defClean`, `offClean`, and `bioClean`. Print the structures of these data frames. **Make sure your data types make sense for each variable.**
+  -The player names and opponent names are factors.
+  -All offensive and defensive statistics are numerical. The `Weight` column in Biography is also numeric.  
+  -Separate the `Height` column into two columns. The newly created columns must be numeric. Then we create one column that     
+   represents `Height`, dropping the irrelevant columns in the process.
+
+  we are then left with three clean data frames: `defClean`, `offClean`, and `bioClean` with the structures of each being printed below.
 
 
 ```{r}
@@ -102,21 +100,13 @@ str(offClean)
 
 
 
-## Part two: Tidying (A)
-For the following questions, work on the cleaned data frames `defClean`, `offClean`, and `bioClean`.
+## Part two: Tidying 
 
-1. Reformat the `defClean` data frame into a tidy format using `gather`. The type of statistic (Tackles_Solo, Tackles_ASST, etc) is added as a **new key column named `Statistic`.** 
-2. Create a histogram for each defensive statistic (make sure to explore different binwidths). Use `facet_wrap` to draw all histograms in a single plot. What defensive skills are rare?
 
-- Based on the distributions of the defensive skills below, we see that many of these skills are rare such as turnovers (specifically forced fumbles, fumble recovery, and interceptions) as well as tackles (specifically sacks).
+Next, to tidy the tables, we must reformat the `defClean` data frame into a tidy format by using `gather`. After this, we created a histogram for each defensive statistic, and used `facet_wrap` to draw all histograms in a single plot. Based on the distributions of the defensive skills below, we see that many of these skills are rare such as turnovers (specifically forced fumbles, fumble recovery, and interceptions) as well as tackles (specifically sacks).
 
-3. Did ISU have better defense against West Virginia or Kansas State? Answer this question by creating a scatterplot with x-axis being the number of solo tackles (by each player) against West Virginia, and y-axis being that against Kansas State. A large number of solo tackles indicates good defense. 
+We then moved onto the question of whether or not ISU had a better defense against West Virginia or Kansas State. We answered this question by creating a scatterplot with x-axis being the name of each player, the y-axis the number of solo tackles each player made, and our color coding indicating which points represent the Kansas State and West Virginia games respectively (please excuse us for this is not exactly what the question was asking for, we ended up getting really stuck here to be quite honest). A large number of solo tackles indicates good defense, and juding from the scatter plot we made below, we observed the number of solo tackles made by each player on the Iowa State Football active roster. This means that even offensive players who weren't going to be going for any defensive plays, let alone solo tackles if the offense is playing well, are going to be shown upon this plot. However, from looking at the players who did make key solo tackles, we saw that there were more solo tackles made in the game against Kansas State than agains West Virginia, especially after looking and seeing that the highest amount of solo tackles against West Virginia was 5, whereas 3 players made 5 or more solo tackles in the Kansas State game. We conclude that Iowa State's defense played better against Kansas State, due to the impact of the number of solo tackles made.
 
-- From the scatter plot we made below, we observed the number of solo tackles made by each player on the Iowa State Football active roster. This means that even offensive players who weren't going to be going for any defensive plays, let alone solo tackles if the offense is playing well, are going to be shown upon this plot. However, from looking at the players who did make key solo tackles, we saw that there were more solo tackles made in the game against Kansas State than agains West Virginia, especially after looking and seeing that the highest amount of solo tackles against West Virginia was 5, whereas 3 players made 5 or more solo tackles in the Kansas State game. We conclude that Iowa State's defense played better against Kansas State, due to the impact of the number of solo tackles made.
-
-      (**Hint**: From step 1 we have gathered our `defClean` into 4 columns. \
-       Now we only want to focus on solo tackles (hint...`filter`). 
-      Look at your data structure. What form do we need our data to have in order to easily answer this question? (hint...`spread`)). 
 
 ```{r}
 
@@ -136,14 +126,7 @@ ggplot(dfWVKState, aes(x=Name, y=score, color = Opponent_Opponent)) + geom_point
 
 ```
 
-
-## Part two: Tidying  (B)
-Now let's turn our attention to the player biography `bioClean`.
-
-1. Separate the `Hometown` column into two columns, namely the city and the state. Print the first few rows of these two columns. (Hint: look at the `sep=` argument of `separate`)
-  We separated the hometown by city and state, through using the same technique as before, all in part to the strsplit function, then using transform to create a new data frame that includes the city and state columns we created.
-2. How many players are there from each state?
-  We then grouped the players by their home state, and counted how many of the players hail from each state (see below).
+Now we turn our attention to the player biography `bioClean`. First, we separate the `Hometown` column into two columns, namely the city and the state, and print the first few rows of these two columns. We separated the hometown by city and state, through using the same technique as before, all in part to the strsplit function, then using transform to create a new data frame that includes the city and state columns we created. We then grouped the players by their home state, and counted how many of the players hail from each state (see below).
 
 ```{r}
 hometownSplit = strsplit(as.character(bioClean$Hometown), split = ", ")
@@ -156,8 +139,8 @@ newBioClean %>% group_by(newBioClean$state) %>% count()
 
 ## Part three: Joining data frames
 
-1. Find out where the offensive players are from by joining the offensive data and player biography data appropriately.
 The code below joins the offense and biography tables at an outer-left-join, and viewing the head will display hometowns, as well as cities and states individually.
+
 
 ```{r}
 #joining the offensive player data together with the player biography 
@@ -170,9 +153,7 @@ head(jointOffense, 50)
 
 ```
 
-2. Is there a relationship between the weight of a player and the receiving yards (`Receiving_YDS`)?
-
-- As you can see from the bar chart below, wide receivers (typically of weight 225lbs) have more receiving yards than any other position or weight. There is a positive correlation between being a wide receiver and being 225lbs as well as a positive correlation between being a wide receiver and having more receiving yards.
+Regarding the relationship between receiving yards and an offensive player's weight, as you can see from the bar chart below, wide receivers (typically of weight 225lbs) have more receiving yards than any other position or weight. There is a positive correlation between being a wide receiver and being 225lbs as well as a positive correlation between being a wide receiver and having more receiving yards.
 
 ```{r}
 
@@ -181,12 +162,7 @@ head(jointOffense, 50)
 ggplot(jointOffense, aes(x = jointOffense$Weight, y = jointOffense$Receiving_YDS, fill = jointOffense$Position, width = 2)) + geom_bar(stat = "identity") + labs(title = "Relationship between a Player's Weight and their Receiving Yards", x = "Player Weight (lbs)", y = "Player Receiving Yards")
 
 ```
-
-3. Explore more. Raise a question that can be answered only by looking at two or more data frames. Then answer that question.
-
-- Going off of the previous question, my lab partner and I decided it would be interesting to find the demographics of each player position by looking for clusters (through a scatter plot) based on height and weight of the player. Based on your height and weight, what position are you most likely to be in?
-
-- From what we can see from our scatter plot below, there are very distinct clusters for Height-to-Weight ratios that you would probably want to fit into in order to play that offensive position.
+ Going off of the previous question, my lab partner and I decided it would be interesting to find the demographics of each player position by looking for clusters (through a scatter plot) based on height and weight of the player. Based on your height and weight, what position are you most likely to be in? So we made a plot and from what we can see on our scatter below, there are very distinct clusters for Height-to-Weight ratios that you would probably want to fit into in order to play that offensive position.
 
 ```{r}
 
@@ -195,10 +171,3 @@ ggplot(jointOffense, aes(x = jointOffense$Weight,  y = jointOffense$totalHeighIn
 
 
 ```
-
-
-
-## Tips
-- Agree on a method to clean the dataset with your teammate. Both teammates can then work on the same cleaned version for downstream analysis.
-- Start early to allow more time to collaborate.
-- Plan ahead to prevent merge conflict: Teammates should modify the `team.Rmd` file in turn, rather than concurrently. 
