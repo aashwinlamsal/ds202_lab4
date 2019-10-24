@@ -140,7 +140,9 @@ ggplot(dfWVKState, aes(x=Name, y=score, color = Opponent_Opponent)) + geom_point
 Now let's turn our attention to the player biography `bioClean`.
 
 1. Separate the `Hometown` column into two columns, namely the city and the state. Print the first few rows of these two columns. (Hint: look at the `sep=` argument of `separate`)
+  We separated the hometown by city and state, through using the same technique as before, all in part to the strsplit function, then using transform to create a new data frame that includes the city and state columns we created.
 2. How many players are there from each state?
+  We then grouped the players by their home state, and counted how many of the players hail from each state (see below).
 
 ```{r}
 hometownSplit = strsplit(as.character(bioClean$Hometown), split = ", ")
