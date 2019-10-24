@@ -148,11 +148,7 @@ Now let's turn our attention to the player biography `bioClean`.
 hometownSplit = strsplit(as.character(bioClean$Hometown), split = ", ")
 newBioClean = transform(bioClean, city = sapply(hometownSplit, "[[", 1), state = sapply(hometownSplit, "[[", 2))
 head(newBioClean)
-
-
-
 newBioClean %>% group_by(newBioClean$state) %>% count()
-
 
 ```
 
@@ -160,6 +156,19 @@ newBioClean %>% group_by(newBioClean$state) %>% count()
 ## Part three: Joining data frames
 
 1. Find out where the offensive players are from by joining the offensive data and player biography data appropriately.
+The code below joins the offense and biography tables at an outer-left-join, and viewing the head will display hometowns, as well as cities and states individually.
+
+```{r}
+#joining the offensive player data together with the player biography 
+library(dplyr)
+jointOffense<- left_join(offClean, newBioClean, by= "Name") #left joined the player biography onto the offense table
+
+jointOffense<- jointOffense%>% group_by(Name)
+head(jointOffense, 50)
+
+
+```
+
 2. Is there a relationship between the weight of a player and the receiving yards (`Receiving_YDS`)?
 3. Explore more. Raise a question that can be answered only by looking at two or more data frames. Then answer that question.
 
