@@ -142,6 +142,15 @@ Now let's turn our attention to the player biography `bioClean`.
 1. Separate the `Hometown` column into two columns, namely the city and the state. Print the first few rows of these two columns. (Hint: look at the `sep=` argument of `separate`)
 2. How many players are there from each state?
 
+```{r}
+hometownSplit = strsplit(as.character(bioClean$Hometown), split = ", ")
+newBioClean = transform(bioClean, city = sapply(hometownSplit, "[[", 1), state = sapply(hometownSplit, "[[", 2))
+head(newBioClean)
+
+
+
+```
+
 
 ## Part three: Joining data frames
 
