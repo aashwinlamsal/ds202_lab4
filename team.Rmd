@@ -1,6 +1,8 @@
 ---
-title: "team.Rmd"
-author: "Aashwin Lamsal", "Eric Friesth"
+title: 'Lab 4'
+subtitle: "Due: 10/24/2019 by 10 pm"
+author: "Aashwin Lamsal, Eric Friesth"
+
 date: "10/24/2019"
 output: html_document
 ---
