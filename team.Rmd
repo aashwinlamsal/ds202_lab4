@@ -57,13 +57,13 @@ str(defense)
 
 #Part 2: All offensive and defensive statistics are numerical. The `Weight` column in Biography is also numeric. (Hint: look at `?mutate_at` if you want to save writing some code).
 
-cleanOffense<- offense %>% mutate_at(c("Receiving_REC","Receiving_YDS","Receiving_TD","Rushing_ATT","Rushing_YDS", "Rushing_TD", "Passing_CMP-ATT", "Passing_YDS", "Passing_TD", "Passing_INT"), funs(as.numeric), na.rm=TRUE)
+offClean<- offense %>% mutate_at(c("Receiving_REC","Receiving_YDS","Receiving_TD","Rushing_ATT","Rushing_YDS", "Rushing_TD", "Passing_CMP-ATT", "Passing_YDS", "Passing_TD", "Passing_INT"), funs(as.numeric), na.rm=TRUE)
 
-str(cleanOffense) #checking if changes were made successfully
+str(offClean) #checking if changes were made successfully
 
-cleanDefense<- defense %>% mutate_at(c("Tackles_Solo", "Tackles_ASST", "Tackles_TFL","Tackles_Sack","Turnover_FF", "Turnover_FR", "Turnover_INT", "Pass_QBH", "Pass_PB"), funs(as.numeric), na.rm=TRUE)
+defClean<- defense %>% mutate_at(c("Tackles_Solo", "Tackles_ASST", "Tackles_TFL","Tackles_Sack","Turnover_FF", "Turnover_FR", "Turnover_INT", "Pass_QBH", "Pass_PB"), funs(as.numeric), na.rm=TRUE)
 
-str(cleanDefense)#checking if changes were made successfully
+str(defClean)#checking if changes were made successfully
 
 bio <- bio%>% mutate_at(c("Weight"), funs(as.numeric))
 str(bio)
@@ -82,29 +82,21 @@ newBio= newBio%>% mutate(inchesInChar=as.numeric(as.character(newBio$Height_Inch
 
 newBio= newBio%>% mutate(totalHeighInInches= (heightInFeet * 12) + inchesInChar) #new calculated column for total heights
 
-newBio <- newBio%>% select(-c("Height_Feet","Height_Inches","Hometown", "Highschool", "Height", "heightInFeet", "inchesInChar"))
+newBio <- newBio%>% select(-c("Height_Feet","Height_Inches", "Highschool", "Height", "heightInFeet", "inchesInChar"))
 
 str(newBio)
 
 
- 
+bioClean = newBio
 
 
+#Part 4: By cleaning the three data frames in R, at the end of this step you should have the following three clean data frames: `defClean`, `offClean`, and `bioClean`. Print the structures of these data frames. **Make sure your data types make sense for each variable.**
 
-
-
+str(bioClean)
+str(defClean)
+str(offClean)
 
 ```
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -118,6 +110,18 @@ For the following questions, work on the cleaned data frames `defClean`, `offCle
       (**Hint**: From step 1 we have gathered our `defClean` into 4 columns. \
        Now we only want to focus on solo tackles (hint...`filter`). 
       Look at your data structure. What form do we need our data to have in order to easily answer this question? (hint...`spread`)). 
+
+```{r}
+
+defClean = defClean %>% gather(key = Statistic, value = score, 3:11)
+
+
+ggplot(defClean, aes(x = defClean$score)) + geom_histogram(bins = 100, binwidth = 1) + facet_wrap(~Statistic)
+
+
+
+```
+
 
 ## Part two: Tidying  (B)
 Now let's turn our attention to the player biography `bioClean`.
