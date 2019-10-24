@@ -110,7 +110,6 @@ For the following questions, work on the cleaned data frames `defClean`, `offCle
 
 3. Did ISU have better defense against West Virginia or Kansas State? Answer this question by creating a scatterplot with x-axis being the number of solo tackles (by each player) against West Virginia, and y-axis being that against Kansas State. A large number of solo tackles indicates good defense. 
 
-
 - From the scatter plot we made below, we observed the number of solo tackles made by each player on the Iowa State Football active roster. This means that even offensive players who weren't going to be going for any defensive plays, let alone solo tackles if the offense is playing well, are going to be shown upon this plot. However, from looking at the players who did make key solo tackles, we saw that there were more solo tackles made in the game against Kansas State than agains West Virginia, especially after looking and seeing that the highest amount of solo tackles against West Virginia was 5, whereas 3 players made 5 or more solo tackles in the Kansas State game. We conclude that Iowa State's defense played better against Kansas State, due to the impact of the number of solo tackles made.
 
       (**Hint**: From step 1 we have gathered our `defClean` into 4 columns. \
@@ -170,7 +169,32 @@ head(jointOffense, 50)
 ```
 
 2. Is there a relationship between the weight of a player and the receiving yards (`Receiving_YDS`)?
+
+- As you can see from the bar chart below, wide receivers (typically of weight 225lbs) have more receiving yards than any other position or weight. There is a positive correlation between being a wide receiver and being 225lbs as well as a positive correlation between being a wide receiver and having more receiving yards.
+
+```{r}
+
+#ggplot(jointOffense, aes(x = jointOffense$Weight, y = jointOffense$Receiving_YDS, color = jointOffense$Position)) + geom_point(position = "jitter") + labs(title = "Relationship between a Player's Weight and their Receiving Yards", x = "Player Weight (lbs)", y = "Player Receiving Yards")
+
+ggplot(jointOffense, aes(x = jointOffense$Weight, y = jointOffense$Receiving_YDS, fill = jointOffense$Position, width = 2)) + geom_bar(stat = "identity") + labs(title = "Relationship between a Player's Weight and their Receiving Yards", x = "Player Weight (lbs)", y = "Player Receiving Yards")
+
+```
+
 3. Explore more. Raise a question that can be answered only by looking at two or more data frames. Then answer that question.
+
+- Going off of the previous question, my lab partner and I decided it would be interesting to find the demographics of each player position by looking for clusters (through a scatter plot) based on height and weight of the player. Based on your height and weight, what position are you most likely to be in?
+
+- From what we can see from our scatter plot below, there are very distinct clusters for Height-to-Weight ratios that you would probably want to fit into in order to play that offensive position.
+
+```{r}
+
+ggplot(jointOffense, aes(x = jointOffense$Weight,  y = jointOffense$totalHeighInInches, color = jointOffense$Position)) + geom_point(position = "jitter") + labs(title = "Weight to Height Correlation for Offensive Postions", x = "Weight (pounds)", y = "Height (inches)")
+
+
+
+```
+
+
 
 ## Tips
 - Agree on a method to clean the dataset with your teammate. Both teammates can then work on the same cleaned version for downstream analysis.
