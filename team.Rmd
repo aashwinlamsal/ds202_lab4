@@ -43,6 +43,35 @@ The three Excel sheets are loaded into R but they are not useful to us before so
 
 
 ```{r}
+library(tidyverse)
+library(dplyr)
+#Part1: player names and opponent names are factors
+offense$Name <- factor(offense$Name)
+defense$Name <- factor(defense$Name)
+
+offense$Opponent_Opponent <- factor(offense$Opponent_Opponent)
+defense$Opponent_Opponent <- factor(defense$Opponent_Opponent)
+
+str(offense) #checking to see if the changes were made successfully
+str(defense)
+
+#Part 2: All offensive and defensive statistics are numerical. The `Weight` column in Biography is also numeric. (Hint: look at `?mutate_at` if you want to save writing some code).
+
+cleanOffense<- offense %>% mutate_at(c("Receiving_REC","Receiving_YDS","Receiving_TD","Rushing_ATT","Rushing_YDS", "Rushing_TD", "Passing_CMP-ATT", "Passing_YDS", "Passing_TD", "Passing_INT"), funs(as.numeric), na.rm=TRUE)
+
+str(cleanOffense) #checking if changes were made successfully
+
+cleanDefense<- defense %>% mutate_at(c("Tackles_Solo", "Tackles_ASST", "Tackles_TFL","Tackles_Sack","Turnover_FF", "Turnover_FR", "Turnover_INT", "Pass_QBH", "Pass_PB"), funs(as.numeric), na.rm=TRUE)
+
+str(cleanDefense)#checking if changes were made successfully
+
+bio <- bio%>% mutate_at(c("Weight"), funs(as.numeric))
+str(bio)
+
+#Part 3: Separate the `Height` column into two columns. Make sure the newly created columns are numeric. Then create one column that represents `Height` (Hint: Use a unit that works well). Drop any irrelavant columns from this process
+
+#bioHeight_Split <- bio %>% str_split(bio$Height, "-")
+#view(bio)
 
 
 
