@@ -70,22 +70,24 @@ str(bio)
 
 #Part 3: Separate the `Height` column into two columns. Make sure the newly created columns are numeric. Then create one column that represents `Height` (Hint: Use a unit that works well). Drop any irrelavant columns from this process
 
-bioHeight = bio
+newBio = bio
 
-bio_split = strsplit(as.character(bioHeight$Height), split = "-")
-bioHeight = transform(bioHeight, Height_Feet = sapply(bio_split, "[[", 1), Height_Inches = sapply(bio_split, "[[", 2))
+bio_split = strsplit(as.character(newBio$Height), split = "-")
+newBio = transform(newBio, Height_Feet = sapply(bio_split, "[[", 1), Height_Inches = sapply(bio_split, "[[", 2))
+str(newBio)
+#newBio = newBio %>% mutate_at(c("Height_Feet", "Height_Inches"), funs(as.numeric))
 
-bioHeight = bioHeight %>% mutate_at(c("Height_Feet", "Height_Inches"), funs(as.numeric))
+newBio= newBio%>% mutate(heightInFeet= as.numeric(as.character(newBio$Height_Feet))) #since splitting the height into 2 columns gives us two columns of factors, converting to character then numeric is a workaround for the type conversion error caused by directly converting from factor type
+newBio= newBio%>% mutate(inchesInChar=as.numeric(as.character(newBio$Height_Inches)))
 
-bioHeight$Height_Feet_Inches = bioHeight$Height_Feet * 12
+newBio= newBio%>% mutate(totalHeighInInches= (heightInFeet * 12) + inchesInChar) #new calculated column for total heights
 
-bioHeight$Height_Inches = bioHeight$Height_Inches + bioHeight$Height_Feet_Inches
+newBio <- newBio%>% select(-c("Height_Feet","Height_Inches","Hometown", "Highschool", "Height", "heightInFeet", "inchesInChar"))
+
+str(newBio)
 
 
-
-bioClean = bioHeight %>% select(-c("Height","Height_Feet", "Height_Feet_Inches", "Hometown", "Highschool"))
-
-offClean = offense %>% 
+ 
 
 
 
