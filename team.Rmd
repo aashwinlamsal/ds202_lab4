@@ -149,6 +149,9 @@ head(newBioClean)
 
 
 
+newBioClean %>% group_by(newBioClean$state) %>% count()
+
+
 ```
 
 
