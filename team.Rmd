@@ -110,6 +110,9 @@ For the following questions, work on the cleaned data frames `defClean`, `offCle
 
 3. Did ISU have better defense against West Virginia or Kansas State? Answer this question by creating a scatterplot with x-axis being the number of solo tackles (by each player) against West Virginia, and y-axis being that against Kansas State. A large number of solo tackles indicates good defense. 
 
+
+- From the scatter plot we made below, we observed the number of solo tackles made by each player on the Iowa State Football active roster. This means that even offensive players who weren't going to be going for any defensive plays, let alone solo tackles if the offense is playing well, are going to be shown upon this plot. However, from looking at the players who did make key solo tackles, we saw that there were more solo tackles made in the game against Kansas State than agains West Virginia, especially after looking and seeing that the highest amount of solo tackles against West Virginia was 5, whereas 3 players made 5 or more solo tackles in the Kansas State game. We conclude that Iowa State's defense played better against Kansas State, due to the impact of the number of solo tackles made.
+
       (**Hint**: From step 1 we have gathered our `defClean` into 4 columns. \
        Now we only want to focus on solo tackles (hint...`filter`). 
       Look at your data structure. What form do we need our data to have in order to easily answer this question? (hint...`spread`)). 
@@ -122,14 +125,13 @@ defClean = defClean %>% gather(key = Statistic, value = score, 3:11)
 ggplot(defClean, aes(x = defClean$score)) + geom_histogram(bins = 350, binwidth = 1) + facet_wrap(~Statistic) + labs(title = "Distribution of Defensive Skill Statistics by their Score", x = "Score (10 point scale)", y = "Frequency of Defensive Skill")
 
 
-defWV = defClean %>% filter(defClean$Opponent_Opponent == "West Virginia" & defClean$Statistic == "Tackles_Solo")
-
-defWV %>% group_by(defWV$Name) %>% summarise(Count = n())
-
-defKState = defClean %>% filter(defClean$Opponent_Opponent == "Kansas State")
+dfWVKState <- defClean %>% filter((defClean$Opponent_Opponent == "West Virginia" & defClean$Statistic == "Tackles_Solo") |(defClean$Opponent_Opponent == "Kansas State" & defClean$Statistic == "Tackles_Solo" ))
 
 
-ggplot(defClean, aes(x = defWV$Tackles_Solo, y = defKState$)) + geom_point()
+#newDf <- data.frame(defKState$score)
+#newDf <- newDf%>% mutate(KWVeTackles=defWV$score)
+
+ggplot(dfWVKState, aes(x=Name, y=score, color = Opponent_Opponent)) + geom_point() + theme(axis.text.x =element_text(angle = 90, hjust= 1)) + labs(title = "Spread of Solo Tackles against Kansas State and West Virginia by each player", y = "Solo Tackles Made")+scale_fill_discrete(name = "Opponent")
 
 ```
 
