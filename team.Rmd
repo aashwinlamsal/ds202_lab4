@@ -105,6 +105,9 @@ For the following questions, work on the cleaned data frames `defClean`, `offCle
 
 1. Reformat the `defClean` data frame into a tidy format using `gather`. The type of statistic (Tackles_Solo, Tackles_ASST, etc) is added as a **new key column named `Statistic`.** 
 2. Create a histogram for each defensive statistic (make sure to explore different binwidths). Use `facet_wrap` to draw all histograms in a single plot. What defensive skills are rare?
+
+- Based on the distributions of the defensive skills below, we see that many of these skills are rare such as turnovers (specifically forced fumbles, fumble recovery, and interceptions) as well as tackles (specifically sacks).
+
 3. Did ISU have better defense against West Virginia or Kansas State? Answer this question by creating a scatterplot with x-axis being the number of solo tackles (by each player) against West Virginia, and y-axis being that against Kansas State. A large number of solo tackles indicates good defense. 
 
       (**Hint**: From step 1 we have gathered our `defClean` into 4 columns. \
@@ -116,7 +119,7 @@ For the following questions, work on the cleaned data frames `defClean`, `offCle
 defClean = defClean %>% gather(key = Statistic, value = score, 3:11)
 
 
-ggplot(defClean, aes(x = defClean$score)) + geom_histogram(bins = 100, binwidth = 1) + facet_wrap(~Statistic)
+ggplot(defClean, aes(x = defClean$score)) + geom_histogram(bins = 350, binwidth = 1) + facet_wrap(~Statistic) + labs(title = "Distribution of Defensive Skill Statistics by their Score", x = "Score (10 point scale)", y = "Frequency of Defensive Skill")
 
 
 
