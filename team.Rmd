@@ -122,6 +122,14 @@ defClean = defClean %>% gather(key = Statistic, value = score, 3:11)
 ggplot(defClean, aes(x = defClean$score)) + geom_histogram(bins = 350, binwidth = 1) + facet_wrap(~Statistic) + labs(title = "Distribution of Defensive Skill Statistics by their Score", x = "Score (10 point scale)", y = "Frequency of Defensive Skill")
 
 
+defWV = defClean %>% filter(defClean$Opponent_Opponent == "West Virginia" & defClean$Statistic == "Tackles_Solo")
+
+defWV %>% group_by(defWV$Name) %>% summarise(Count = n())
+
+defKState = defClean %>% filter(defClean$Opponent_Opponent == "Kansas State")
+
+
+ggplot(defClean, aes(x = defWV$Tackles_Solo, y = defKState$)) + geom_point()
 
 ```
 
